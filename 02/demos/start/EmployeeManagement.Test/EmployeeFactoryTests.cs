@@ -50,5 +50,19 @@ namespace EmployeeManagement.Test
             // Assert
             Assert.InRange(employee.Salary, 2500, 3500);
         }
+
+        [Fact]
+        public void CreateEmployee_ConstructInternalEmployee_SalaryPrecission()
+        {
+            // Arrange
+            var employeeFactory = new EmployeeFactory();
+
+            // Act
+            var employee = (InternalEmployee)employeeFactory.CreateEmployee("Ale", "Moreno");
+            employee.Salary = 2500.123m;
+
+            // Assert
+            Assert.Equal(employee.Salary, 2500,0);
+        }
     }
 }
