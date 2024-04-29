@@ -8,7 +8,8 @@ using Xunit;
 
 namespace EmployeeManagement.Test
 {
-    public class EmployeeServiceTests : IClassFixture<EmployeeServiceFixture>
+    [Collection("EmployeeServiceCollection")]
+    public class EmployeeServiceTests // : IClassFixture<EmployeeServiceFixture>
     {
         private readonly EmployeeServiceFixture _employeeServiceFixture;
 
@@ -50,14 +51,10 @@ namespace EmployeeManagement.Test
         public void CreateInternalEmployee_InternalEmployeeCreated_MustHaveAttendedSecondObligatoryCourse_WithPredicate()
         {
             // Arrange
-            var employeeManagementTestDataRepository =
-                new EmployeeManagementTestDataRepository();
-            var employeeService = new EmployeeService(
-                employeeManagementTestDataRepository,
-                new EmployeeFactory());
 
             // Act
-            var internalEmployee = employeeService.CreateInternalEmployee("Brooklyn", "Cannon");
+            var internalEmployee = _employeeServiceFixture.EmployeeService
+                .CreateInternalEmployee("Brooklyn", "Cannon");
 
             // Assert
             Assert.Contains(internalEmployee.AttendedCourses,
@@ -89,14 +86,9 @@ namespace EmployeeManagement.Test
         public void CreateInternalEmployee_InternalEmployeeCreated_AttendedCoursesMustNotBeNew()
         {
             // Arrange
-            var employeeManagementTestDataRepository =
-                new EmployeeManagementTestDataRepository();
-            var employeeService = new EmployeeService(
-                employeeManagementTestDataRepository,
-                new EmployeeFactory());
 
             // Act
-            var internalEmployee = employeeService.CreateInternalEmployee("Brooklyn", "Cannon");
+            var internalEmployee = _employeeServiceFixture.EmployeeService.CreateInternalEmployee("Brooklyn", "Cannon");
 
             // Assert
             //foreach (var course in internalEmployee.AttendedCourses)
