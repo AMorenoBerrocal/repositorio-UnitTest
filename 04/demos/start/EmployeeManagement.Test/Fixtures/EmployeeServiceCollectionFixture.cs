@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace EmployeeManagement.Test
+namespace EmployeeManagement.Test.Fixtures
 {
     [CollectionDefinition("EmployeeServiceCollection")]
-    public class EmployeeServiceCollectionFixture : ICollectionFixture<EmployeeServiceCollectionFixture>
+    public class EmployeeServiceCollectionFixture
+        : ICollectionFixture<EmployeeServiceFixture>
     {
-
     }
 }

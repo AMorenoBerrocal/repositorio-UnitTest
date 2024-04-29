@@ -25,6 +25,8 @@ namespace EmployeeManagement.Test
         }
 
         [Fact]
+        [Trait("Category", "EmployeeFactory_CreateEmployee_Salary")]
+
         public void CreateEmployee_ConstructInternalEmployee_SalaryMustBe2500()
         {
 
@@ -34,7 +36,9 @@ namespace EmployeeManagement.Test
             Assert.Equal(2500, employee.Salary);
         }
 
-        [Fact]
+        [Fact(Skip = "Skipping this one for demo =P")]
+        [Trait("Category", "EmployeeFactory_CreateEmployee_Salary")]
+
         public void CreateEmployee_ConstructInternalEmployee_SalaryMustBeBetween2500And3500()
         {
             // Arrange
@@ -48,6 +52,8 @@ namespace EmployeeManagement.Test
         }
 
         [Fact]
+        [Trait("Category", "EmployeeFactory_CreateEmployee_Salary")]
+
         public void CreateEmployee_ConstructInternalEmployee_SalaryMustBeBetween2500And3500_Alternative()
         {
             // Arrange
@@ -61,6 +67,8 @@ namespace EmployeeManagement.Test
         }
 
         [Fact]
+        [Trait("Category", "EmployeeFactory_CreateEmployee_Salary")]
+
         public void CreateEmployee_ConstructInternalEmployee_SalaryMustBeBetween2500And3500_AlternativeWithInRange()
         {
             // Arrange
@@ -74,6 +82,7 @@ namespace EmployeeManagement.Test
 
 
         [Fact]
+        [Trait("Category", "EmployeeFactory_CreateEmployee_Salary")]
         public void CreateEmployee_ConstructInternalEmployee_SalaryMustBe2500_PrecisionExample()
         {
             // Arrange
@@ -87,6 +96,7 @@ namespace EmployeeManagement.Test
         }
 
         [Fact]
+        [Trait("Category", "EmployeeFactory_CreateEmplotee_ReturnType")]
         public void CreateEmployee_IsExternalIsTrue_ReturnTypeMustBeExternalEmployee()
         {
             // Arrange
