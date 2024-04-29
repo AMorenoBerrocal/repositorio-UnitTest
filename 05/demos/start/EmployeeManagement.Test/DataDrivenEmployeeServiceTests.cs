@@ -62,5 +62,47 @@ namespace EmployeeManagement.Test
             // Assert
             Assert.False(internalEmployee.MinimumRaiseGiven);
         }
+
+        public static IEnumerable<Object[]> ExampleTestDataForGiveRaise_WithMethod(
+            int testDataInstancdesToProvide)
+        {
+            var testData = new List<object[]>
+            {
+                new object[] {100, true},
+                new object[] {200, false}
+            };
+            return testData.Take(testDataInstancdesToProvide);
+            
+        }
+
+        public static IEnumerable<Object[]> ExampleTestDataForGiveRaise_WithProperty
+        {
+            get
+            {
+                return new List<object[]>
+                {
+                    new object[] {100, true},
+                    new object[] {200, false},
+                };
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(ExampleTestDataForGiveRaise_WithMethod),1)]
+        public async Task GiveRaise_MoreThanMinimumRaiseGiven_EmployeeMinimumRaiseGivenMatchesValue(
+            int raiseGiven, bool expectedValueForMinimumRaiseGiven)
+        {
+            // Arrange  
+            var internalEmployee = new InternalEmployee(
+                "Brooklyn", "Cannon", 5, 3000, false, 1);
+
+            // Act 
+            await _employeeServiceFixture.EmployeeService
+                .GiveRaiseAsync(internalEmployee, raiseGiven);
+
+            // Assert
+            Assert.Equal(expectedValueForMinimumRaiseGiven, 
+                internalEmployee.MinimumRaiseGiven);
+        }
     }
 }
