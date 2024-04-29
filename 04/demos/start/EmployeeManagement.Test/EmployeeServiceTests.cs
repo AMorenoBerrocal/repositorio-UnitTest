@@ -2,27 +2,30 @@
 using EmployeeManagement.Business.EventArguments;
 using EmployeeManagement.Business.Exceptions;
 using EmployeeManagement.DataAccess.Entities;
-using EmployeeManagement.Services.Test; 
+using EmployeeManagement.Services.Test;
+using EmployeeManagement.Test.Fixtures;
 using Xunit;
 
 namespace EmployeeManagement.Test
 {
-    public class EmployeeServiceTests
+    public class EmployeeServiceTests : IClassFixture<EmployeeServiceFixture>
     {
+        private readonly EmployeeServiceFixture _employeeServiceFixture;
+
+        public EmployeeServiceTests(EmployeeServiceFixture employeeServiceFixture) {
+            _employeeServiceFixture = employeeServiceFixture;
+        }
+
         [Fact]
         public void CreateInternalEmployee_InternalEmployeeCreated_MustHaveAttendedFirstObligatoryCourse_WithObject()
         {
             // Arrange
-            var employeeManagementTestDataRepository =
-              new EmployeeManagementTestDataRepository();
-            var employeeService = new EmployeeService(
-                employeeManagementTestDataRepository,
-                new EmployeeFactory());
-            var obligatoryCourse = employeeManagementTestDataRepository
+            var obligatoryCourse = _employeeServiceFixture
+                .EmployeeManagementTestDataRepository
                 .GetCourse(Guid.Parse("37e03ca7-c730-4351-834c-b66f280cdb01"));
 
             // Act
-            var internalEmployee = employeeService
+            var internalEmployee = _employeeServiceFixture.EmployeeService
                 .CreateInternalEmployee("Brooklyn", "Cannon");
 
             // Assert
@@ -33,14 +36,9 @@ namespace EmployeeManagement.Test
         public void CreateInternalEmployee_InternalEmployeeCreated_MustHaveAttendedFirstObligatoryCourse_WithPredicate()
         {
             // Arrange
-            var employeeManagementTestDataRepository =
-              new EmployeeManagementTestDataRepository();
-            var employeeService = new EmployeeService(
-                employeeManagementTestDataRepository,
-                new EmployeeFactory());
 
             // Act
-            var internalEmployee = employeeService
+            var internalEmployee = _employeeServiceFixture.EmployeeService
                 .CreateInternalEmployee("Brooklyn", "Cannon");
 
             // Assert
