@@ -76,21 +76,21 @@ namespace EmployeeManagement.Test
             
         }
 
-        public static IEnumerable<Object[]> ExampleTestDataForGiveRaise_WithProperty
+        public static TheoryData<int, bool> StronglyExampleTestDataForGiveRaise_WithProperty
         {
             get
             {
-                return new List<object[]>
+                return new TheoryData<int, bool>
                 {
-                    new object[] {100, true},
-                    new object[] {200, false},
+                    {100, true},
+                    {200, false}
                 };
             }
         }
 
         [Theory]
         // [MemberData(nameof(ExampleTestDataForGiveRaise_WithMethod),1)]
-        [ClassData(typeof(EmployeeServiceTestData))]
+        [ClassData(typeof(StronglyTypedEmployeeServiceTestData))]
         public async Task GiveRaise_MoreThanMinimumRaiseGiven_EmployeeMinimumRaiseGivenMatchesValue(
             int raiseGiven, bool expectedValueForMinimumRaiseGiven)
         {
