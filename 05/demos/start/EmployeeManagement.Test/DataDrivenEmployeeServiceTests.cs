@@ -1,5 +1,6 @@
 ﻿using EmployeeManagement.DataAccess.Entities;
 using EmployeeManagement.Test.Fixtures;
+using EmployeeManagement.Test.TestData;
 using EmployeeManagement.TestData;
 using Xunit;
 
@@ -90,7 +91,8 @@ namespace EmployeeManagement.Test
 
         [Theory]
         // [MemberData(nameof(ExampleTestDataForGiveRaise_WithMethod),1)]
-        [ClassData(typeof(StronglyTypedEmployeeServiceTestData))]
+        //[ClassData(typeof(StronglyTypedEmployeeServiceTestData))]
+        [ClassData(typeof(StronglyTypedEmployeeServiceTestData_FromFile))]
         public async Task GiveRaise_MoreThanMinimumRaiseGiven_EmployeeMinimumRaiseGivenMatchesValue(
             int raiseGiven, bool expectedValueForMinimumRaiseGiven)
         {
