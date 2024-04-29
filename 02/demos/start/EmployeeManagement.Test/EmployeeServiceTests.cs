@@ -1,5 +1,7 @@
 ﻿using EmployeeManagement.Business;
+using EmployeeManagement.Business.EventArguments;
 using EmployeeManagement.Business.Exceptions;
+using EmployeeManagement.DataAccess.Entities;
 using EmployeeManagement.Services.Test;
 using System;
 using System.Collections.Generic;
@@ -107,18 +109,56 @@ namespace EmployeeManagement.Test
         }
 
         [Fact]
-        public async Task GiveRaise_RaiseBellowMinimumGiven_EmployeeInvalidRaiseExceptionMustBeThrown()
+        public async Task GiveRaise_RaiseBelowMinimumGiven_EmployeeInvalidRaiseExceptionMustBeThrown()
         {
-            // Arrange
+            // Arrange 
             var employeeService = new EmployeeService(
-                new EmployeeManagementTestDataRepository(), new EmployeeFactory());
-            var internalEmployee = new InternalExployee(
+                new EmployeeManagementTestDataRepository(),
+                new EmployeeFactory());
+            var internalEmployee = new InternalEmployee(
                 "Brooklyn", "Cannon", 5, 3000, false, 1);
 
-            // Act y assert
-            Assert.ThrowsAsync<EmployeeInvalidRaiseException>(
-                )
-            await employeeService.GiveRaiseAsync(internalEmployee, 50);
+            // Act & Assert
+            await Assert.ThrowsAsync<EmployeeInvalidRaiseException>(
+                async () =>
+                await employeeService.GiveRaiseAsync(internalEmployee, 50)
+                );
+
+        }
+
+        //[Fact]
+        //public void GiveRaise_RaiseBelowMinimumGiven_EmployeeInvalidRaiseExceptionMustBeThrown_Mistake()
+        //{
+        //    // Arrange 
+        //    var employeeService = new EmployeeService(
+        //        new EmployeeManagementTestDataRepository(),
+        //        new EmployeeFactory());
+        //    var internalEmployee = new InternalEmployee(
+        //        "Brooklyn", "Cannon", 5, 3000, false, 1);
+
+        //    // Act & Assert
+        //    Assert.ThrowsAsync<EmployeeInvalidRaiseException>(
+        //        async () =>
+        //        await employeeService.GiveRaiseAsync(internalEmployee, 50)
+        //        );
+
+        //}
+
+        [Fact]
+        public void NotifyOfAbsence_EmployeeIsAbsent_OnEmployeeIsAbsentMustBeTriggered()
+        {
+            // Arrange 
+            var employeeService = new EmployeeService(
+                new EmployeeManagementTestDataRepository(),
+                new EmployeeFactory());
+            var internalEmployee = new InternalEmployee(
+                "Brooklyn", "Cannon", 5, 3000, false, 1);
+
+            // Act & Assert
+            Assert.Raises<EmployeeIsAbsentEventArgs>(
+               handler => employeeService.EmployeeIsAbsent += handler,
+               handler => employeeService.EmployeeIsAbsent -= handler,
+               () => employeeService.NotifyOfAbsence(internalEmployee));
         }
 
     }
