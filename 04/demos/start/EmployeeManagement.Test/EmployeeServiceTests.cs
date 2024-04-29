@@ -5,6 +5,7 @@ using EmployeeManagement.DataAccess.Entities;
 using EmployeeManagement.Services.Test;
 using EmployeeManagement.Test.Fixtures;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace EmployeeManagement.Test
 {
@@ -12,6 +13,7 @@ namespace EmployeeManagement.Test
     public class EmployeeServiceTests // : IClassFixture<EmployeeServiceFixture>
     {
         private readonly EmployeeServiceFixture _employeeServiceFixture;
+        private readonly ITestOutputHelper _testOutputHelper;
 
         public EmployeeServiceTests(EmployeeServiceFixture employeeServiceFixture) {
             _employeeServiceFixture = employeeServiceFixture;
@@ -26,8 +28,14 @@ namespace EmployeeManagement.Test
                 .GetCourse(Guid.Parse("37e03ca7-c730-4351-834c-b66f280cdb01"));
 
             // Act
-            var internalEmployee = _employeeServiceFixture.EmployeeService
+            var internalEmployee = _employeeServiceFixture
+                .EmployeeService
                 .CreateInternalEmployee("Brooklyn", "Cannon");
+
+            _testOutputHelper.WriteLine($"Employee after Act: " + 
+                $"{internalEmployee.FirstName} {internalEmployee.LastName}");
+            internalEmployee.AttendedCourses
+                .ForEach(c => _testOutputHelper.WriteLine($"Attended course: {c.Id} {c.Title}"));
 
             // Assert
             Assert.Contains(obligatoryCourse, internalEmployee.AttendedCourses);
