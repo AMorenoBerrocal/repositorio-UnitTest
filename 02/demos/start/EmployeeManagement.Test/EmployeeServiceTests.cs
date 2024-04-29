@@ -1,4 +1,5 @@
 ﻿using EmployeeManagement.Business;
+using EmployeeManagement.Business.Exceptions;
 using EmployeeManagement.Services.Test;
 using System;
 using System.Collections.Generic;
@@ -104,6 +105,22 @@ namespace EmployeeManagement.Test
             // Assert con todos los elementos de una colección
 
         }
+
+        [Fact]
+        public async Task GiveRaise_RaiseBellowMinimumGiven_EmployeeInvalidRaiseExceptionMustBeThrown()
+        {
+            // Arrange
+            var employeeService = new EmployeeService(
+                new EmployeeManagementTestDataRepository(), new EmployeeFactory());
+            var internalEmployee = new InternalExployee(
+                "Brooklyn", "Cannon", 5, 3000, false, 1);
+
+            // Act y assert
+            Assert.ThrowsAsync<EmployeeInvalidRaiseException>(
+                )
+            await employeeService.GiveRaiseAsync(internalEmployee, 50);
+        }
+
     }
 
 
