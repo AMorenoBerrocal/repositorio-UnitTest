@@ -10,6 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit.Sdk;
 using Xunit;
+using EmployeeManagement.DataAccess.Entities;
+using EmployeeManagement.Services.Test;
+using EmployeeManagement.Test.HttpMessageHandlers;
 
 namespace EmployeeManagement.Test
 {
@@ -58,6 +61,25 @@ namespace EmployeeManagement.Test
             // Assert
             Assert.Equal(expectedSuggestedBonus, internalEmployee.SuggestedBonus);
         }
+
+        [Fact]
+        public async Task PromoteInternalEmployeeAsync_IsEligible_JobLevelMustBeIncreased()
+        {
+            // Arrange
+            var httpClient = new HttpClient(
+                new TestablePromotionEligibilityHandler(true));
+            var internalEmployee = new InternalEmployee(
+                "Brooklyn", "Cannon", 5, 3000, false, 1);
+            var promotionService = new PromotionService(httpClient,
+                new EmployeeManagementTestDataRepository());
+
+            // Act
+            await promotionService.PromoteInternalEmployeeAsync(internalEmployee);
+
+            // Assert
+            Assert.Equal(2, internalEmployee.JobLevel);
+        }
+
 
     }
 }
