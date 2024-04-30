@@ -34,19 +34,24 @@ namespace EmployeeManagement.Test
                     new InternalEmployee("Anne", "Adams", 3, 4000, false, 3)
                 });
 
-            var mapperMock = new Mock<IMapper>();
-            mapperMock.Setup(m =>
-                 m.Map<InternalEmployee, Models.InternalEmployeeDto>
-                 (It.IsAny<InternalEmployee>()))
-                 .Returns(new Models.InternalEmployeeDto());
+            //var mapperMock = new Mock<IMapper>();
+            //mapperMock.Setup(m =>
+            //     m.Map<InternalEmployee, Models.InternalEmployeeDto>
+            //     (It.IsAny<InternalEmployee>()))
+            //     .Returns(new Models.InternalEmployeeDto());
+            var mapperConfiguration = new MapperConfiguration(
+                cfg => cfg.AddProfile<MapperProfiles.EmployeeProfile>());
+            var mapper = new Mapper(mapperConfiguration);
 
+            _internalEmployeesController = new InternalEmployeesController(
+                 employeeServiceMock.Object, mapper);
         }
 
         [Fact]
         public async Task GetInternalEmployees_GetAction_MustReturnOkObjectResult()
         {
             // Arrange
-           
+
             // Act
             var result = await _internalEmployeesController.GetInternalEmployees();
 
@@ -74,6 +79,46 @@ namespace EmployeeManagement.Test
                 ((OkObjectResult)actionResult.Result).Value);
         }
 
-       
+        [Fact]
+        public async Task GetInternalEmployees_GetAction_MustReturnNumberOfInputtedInternalEmployees()
+        {
+            // Arrange
+
+            // Act
+            var result = await _internalEmployeesController.GetInternalEmployees();
+
+            // Assert
+            var actionResult = Assert
+                .IsType<ActionResult<IEnumerable<Models.InternalEmployeeDto>>>(result);
+
+            Assert.Equal(3,
+             ((IEnumerable<Models.InternalEmployeeDto>)
+             ((OkObjectResult)actionResult.Result).Value).Count());
+        }
+
+        [Fact]
+        public async Task GetInternalEmployees_GetAction_ReturnsOkObjectResultWithCorrectAmountOfInternalEmployees()
+        {
+            // Arrange
+
+            // Act
+            var result = await _internalEmployeesController.GetInternalEmployees();
+
+            // Assert
+            var actionResult = Assert
+                .IsType<ActionResult<IEnumerable<Models.InternalEmployeeDto>>>(result);
+            var okObjectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var dtos = Assert.IsAssignableFrom<IEnumerable<Models.InternalEmployeeDto>>
+                (okObjectResult.Value);
+            Assert.Equal(3, dtos.Count());
+            var firstEmployee = dtos.First();
+            Assert.Equal(_firstEmployee.Id, firstEmployee.Id);
+            Assert.Equal(_firstEmployee.FirstName, firstEmployee.FirstName);
+            Assert.Equal(_firstEmployee.LastName, firstEmployee.LastName);
+            Assert.Equal(_firstEmployee.Salary, firstEmployee.Salary);
+            Assert.Equal(_firstEmployee.SuggestedBonus, firstEmployee.SuggestedBonus);
+            Assert.Equal(_firstEmployee.YearsInService, firstEmployee.YearsInService);
+        }
     }
+
 }
