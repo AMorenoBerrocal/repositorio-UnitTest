@@ -13,8 +13,6 @@ namespace EmployeeManagement.Test
         private readonly InternalEmployeesController _internalEmployeesController;
         private readonly InternalEmployee _firstEmployee;
 
-
-
         public InternalEmployeeControllerTests()
         {
             _firstEmployee = new InternalEmployee(
@@ -24,7 +22,6 @@ namespace EmployeeManagement.Test
                 SuggestedBonus = 400
             };
 
-            // Mockup para interacturar con los servicios de empleado
             var employeeServiceMock = new Mock<IEmployeeService>();
             employeeServiceMock
                 .Setup(m => m.FetchInternalEmployeesAsync())
@@ -51,7 +48,7 @@ namespace EmployeeManagement.Test
         public async Task GetInternalEmployees_GetAction_MustReturnOkObjectResult()
         {
             // Arrange
-
+           
             // Act
             var result = await _internalEmployeesController.GetInternalEmployees();
 
@@ -110,7 +107,7 @@ namespace EmployeeManagement.Test
             var okObjectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var dtos = Assert.IsAssignableFrom<IEnumerable<Models.InternalEmployeeDto>>
                 (okObjectResult.Value);
-            Assert.Equal(3, dtos.Count());
+            Assert.Equal(3,dtos.Count());
             var firstEmployee = dtos.First();
             Assert.Equal(_firstEmployee.Id, firstEmployee.Id);
             Assert.Equal(_firstEmployee.FirstName, firstEmployee.FirstName);
@@ -120,5 +117,4 @@ namespace EmployeeManagement.Test
             Assert.Equal(_firstEmployee.YearsInService, firstEmployee.YearsInService);
         }
     }
-
 }
