@@ -20,7 +20,6 @@ namespace EmployeeManagement.Test
             _testOutputHelper = testOutputHelper;
         }
 
-
         [Fact]
         public void CreateInternalEmployee_InternalEmployeeCreated_MustHaveAttendedFirstObligatoryCourse_WithObject()
         {
@@ -99,10 +98,6 @@ namespace EmployeeManagement.Test
                 .CreateInternalEmployee("Brooklyn", "Cannon");
 
             // Assert
-            //foreach (var course in internalEmployee.AttendedCourses)
-            //{
-            //    Assert.False(course.IsNew);
-            //}
             Assert.All(internalEmployee.AttendedCourses,
                 course => Assert.False(course.IsNew));
         }
@@ -111,7 +106,7 @@ namespace EmployeeManagement.Test
         public async Task CreateInternalEmployee_InternalEmployeeCreated_AttendedCoursesMustMatchObligatoryCourses_Async()
         {
             // Arrange
-          
+
             var obligatoryCourses = await _employeeServiceFixture
                 .EmployeeManagementTestDataRepository
                 .GetCoursesAsync(
@@ -135,31 +130,11 @@ namespace EmployeeManagement.Test
 
             // Act & Assert
             await Assert.ThrowsAsync<EmployeeInvalidRaiseException>(
-                async () => 
+                async () =>
                 await _employeeServiceFixture.EmployeeService
                     .GiveRaiseAsync(internalEmployee, 50)
                 );
-
         }
-
-        //[Fact]
-        //public void GiveRaise_RaiseBelowMinimumGiven_EmployeeInvalidRaiseExceptionMustBeThrown_Mistake()
-        //{
-        //    // Arrange 
-        //    var employeeService = new EmployeeService(
-        //        new EmployeeManagementTestDataRepository(),
-        //        new EmployeeFactory());
-        //    var internalEmployee = new InternalEmployee(
-        //        "Brooklyn", "Cannon", 5, 3000, false, 1);
-
-        //    // Act & Assert
-        //    Assert.ThrowsAsync<EmployeeInvalidRaiseException>(
-        //        async () =>
-        //        await employeeService.GiveRaiseAsync(internalEmployee, 50)
-        //        );
-
-        //}
-
 
         [Fact]
         public void NotifyOfAbsence_EmployeeIsAbsent_OnEmployeeIsAbsentMustBeTriggered()
